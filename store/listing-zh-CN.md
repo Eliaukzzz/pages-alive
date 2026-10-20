@@ -58,3 +58,9 @@ Keep Alive 会在页面加载前注入一段小脚本，让页面：
 ## 语言
 
 中文（简体）
+
+## 支持与主页
+
+- 主页 URL：`https://github.com/Eliaukzzz/pages-alive`
+- 支持 URL：`https://github.com/Eliaukzzz/pages-alive/issues`
+- 隐私政策 URL：`https://eliaukzzz.github.io/pages-alive/privacy.html`

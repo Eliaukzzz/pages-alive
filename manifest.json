@@ -4,9 +4,16 @@
   "short_name": "Keep Alive",
   "version": "1.0.0",
   "description": "让指定网站以为标签页始终可见、始终聚焦，避免切到后台后视频降级为纯音频流、切回时卡顿重缓冲。",
+  "author": "Eliaukzzz",
+  "homepage_url": "https://github.com/Eliaukzzz/pages-alive",
   "minimum_chrome_version": "111",
-  "permissions": ["storage", "scripting"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "src/background.js",
     "type": "module"

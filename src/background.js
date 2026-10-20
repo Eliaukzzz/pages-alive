@@ -178,7 +178,11 @@ async function seedIfEmpty() {
 
 chrome.runtime.onInstalled.addListener((details) => {
   (async () => {
-    if (details.reason === 'install') await seedIfEmpty();
+    if (details.reason === 'install') {
+      await seedIfEmpty();
+      // 首次安装打开一次设置页，让用户（和审核员）立刻看到能配置什么
+      await chrome.runtime.openOptionsPage().catch(() => {});
+    }
     await bootstrap();
   })().catch((error) => console.error('[Keep Alive] 初始化失败', error));
 });

@@ -119,6 +119,8 @@ __keepAlive.state();      // { patched: true, realHidden: true/false, config, ra
 - `host_permissions: <all_urls>` 是因为站点列表由你自己填写，扩展需要有能力向任意站点注入；但脚本是通过 `chrome.scripting.registerContentScripts` **动态注册**的，**只会在你列表里的站点运行**，其它网站完全不受影响。
 - 所有注入逻辑都在页面自己的 JS 环境里，不读取、不上传页面内容。
 
+完整说明见 [PRIVACY.md](PRIVACY.md)。
+
 ## 目录结构
 
 ```

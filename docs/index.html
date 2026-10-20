@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Keep Alive · 后台视频常亮</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f8f7;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #5b6577;
+        --faint: #8a93a5;
+        --accent: #0ca678;
+        --border: rgba(15, 23, 42, 0.09);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161a;
+          --card: #1c1f25;
+          --text: #e9edf4;
+          --muted: #a3adbd;
+          --faint: #78818f;
+          --accent: #20c997;
+          --border: rgba(255, 255, 255, 0.08);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(800px 400px at 50% -120px, rgba(18, 184, 134, 0.14), transparent 70%),
+          var(--bg);
+        color: var(--text);
+        font:
+          15px/1.7 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei",
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        width: 100%;
+        max-width: 520px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 40px 36px 34px;
+        text-align: center;
+        box-shadow: 0 16px 48px rgba(15, 23, 42, 0.08);
+      }
+      .logo {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 18px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, #1ac994, #078a67);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 24px rgba(9, 146, 104, 0.3);
+      }
+      .logo svg {
+        width: 30px;
+        height: 30px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+      }
+      p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 26px;
+        flex-wrap: wrap;
+      }
+      a.btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        padding: 0 18px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        color: var(--text);
+        background: transparent;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      a.btn:hover {
+        background: rgba(15, 23, 42, 0.04);
+        border-color: rgba(15, 23, 42, 0.16);
+      }
+      a.primary {
+        background: linear-gradient(135deg, #12b886, #0b9c72);
+        border-color: transparent;
+        color: #fff;
+      }
+      a.primary:hover {
+        background: linear-gradient(135deg, #0fac7d, #088a66);
+      }
+      footer {
+        margin-top: 26px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        color: var(--faint);
+        font-size: 12.5px;
+      }
+      @media (prefers-color-scheme: dark) {
+        a.btn:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.18);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#fff">
+          <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10-6.5a1 1 0 0 0 0-1.72l-10-6.5A1 1 0 0 0 8 5.5Z" />
+        </svg>
+      </div>
+      <h1>Keep Alive</h1>
+      <p>后台视频常亮 · 切到别的标签页，视频也不降级为纯音频，切回不卡顿。</p>
+
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/Eliaukzzz/pages-alive">GitHub 仓库</a>
+        <a class="btn" href="./privacy.html">隐私政策</a>
+      </div>
+
+      <footer>Chrome / Edge 扩展 · 不联网 · 不上传任何数据</footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Keep Alive</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup">
+      <header class="head">
+        <img class="logo" src="../icons/icon48.png" alt="" width="34" height="34" />
+        <div class="titles">
+          <h1>Keep Alive</h1>
+          <p>后台视频常亮</p>
+        </div>
+        <label class="switch" title="全局开关">
+          <input id="globalSwitch" type="checkbox" aria-label="全局开关" />
+          <span class="track"></span>
+        </label>
+      </header>
+
+      <main class="body">
+        <section class="site card">
+          <div class="site-main">
+            <span class="avatar" id="avatar">·</span>
+            <div class="site-text">
+              <div class="host" id="host">正在读取…</div>
+              <div class="site-sub" id="siteSub">—</div>
+            </div>
+            <span class="pill pill-off" id="pill">检测中</span>
+          </div>
+          <div class="site-actions">
+            <button class="btn btn-primary btn-block" id="primaryBtn" disabled>请稍候</button>
+          </div>
+        </section>
+
+        <p class="note" id="note"></p>
+      </main>
+
+      <footer class="foot">
+        <button class="link" id="openOptions">站点与高级设置</button>
+        <span class="ver" id="version"></span>
+      </footer>
+    </div>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

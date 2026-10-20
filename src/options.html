@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Keep Alive · 设置</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <img class="hero-icon" src="../icons/icon128.png" alt="" width="52" height="52" />
+        <div class="hero-text">
+          <h1>Keep Alive</h1>
+          <p>让下面这些网站以为标签页一直在前台，切到后台也不降级成纯音频。</p>
+        </div>
+        <label class="global-toggle">
+          <span id="globalLabel">已开启</span>
+          <span class="switch">
+            <input id="globalSwitch" type="checkbox" aria-label="全局开关" />
+            <span class="track"></span>
+          </span>
+        </label>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="card section">
+        <div class="section-head">
+          <div>
+            <h2>保护的站点</h2>
+            <p class="section-desc">只会在这些站点里注入脚本，其它网站完全不受影响。</p>
+          </div>
+          <span class="counter" id="siteCount">0 个</span>
+        </div>
+
+        <ul class="site-list" id="siteList"></ul>
+
+        <div class="empty" id="emptyState" hidden>
+          <div class="empty-mark">⌁</div>
+          <p>还没有添加站点</p>
+          <span>从下面的常见站点里选一个，或者手动输入域名。</span>
+        </div>
+      </section>
+
+      <section class="card section">
+        <div class="section-head">
+          <div>
+            <h2>添加站点</h2>
+            <p class="section-desc">支持域名、带路径的链接，也支持 <code>*</code> 通配符。</p>
+          </div>
+        </div>
+
+        <form class="add-form" id="addForm" autocomplete="off">
+          <input
+            class="input"
+            id="siteInput"
+            type="text"
+            placeholder="例如 bilibili.com 或 https://www.bilibili.com/video/*"
+            spellcheck="false"
+            aria-label="站点地址"
+          />
+          <button class="btn btn-primary" type="submit" id="addBtn">添加</button>
+        </form>
+
+        <p class="preview" id="preview"></p>
+
+        <div class="presets">
+          <span class="presets-label">快速添加</span>
+          <div class="chips" id="presetChips"></div>
+        </div>
+      </section>
+
+      <section class="card section">
+        <div class="section-head">
+          <div>
+            <h2>高级选项</h2>
+            <p class="section-desc">默认值适合大多数情况，不确定就不要改。</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="resetBtn">恢复默认</button>
+        </div>
+
+        <div class="toggle-list">
+          <label class="toggle-row">
+            <div class="toggle-text">
+              <span class="toggle-title">保持动画帧</span>
+              <span class="toggle-desc">
+                后台时接管 <code>requestAnimationFrame</code>，避免播放器的动画循环彻底停摆（受浏览器节流，后台约每秒一次）。关闭可以省电。
+              </span>
+            </div>
+            <span class="switch">
+              <input id="optRaf" type="checkbox" />
+              <span class="track"></span>
+            </span>
+          </label>
+
+          <label class="toggle-row">
+            <div class="toggle-text">
+              <span class="toggle-title">防止标签页被回收</span>
+              <span class="toggle-desc">
+                内存紧张时 Chrome 可能丢弃后台标签页并重新加载，开启后这些站点不会被自动丢弃。
+              </span>
+            </div>
+            <span class="switch">
+              <input id="optDiscard" type="checkbox" />
+              <span class="track"></span>
+            </span>
+          </label>
+
+          <label class="toggle-row">
+            <div class="toggle-text">
+              <span class="toggle-title">拦截后台事件</span>
+              <span class="toggle-desc">
+                吞掉 <code>visibilitychange</code> 和窗口 <code>blur</code>。关掉后网站会立刻恢复原来的降级行为，一般不需要关。
+              </span>
+            </div>
+            <span class="switch">
+              <input id="optEvents" type="checkbox" />
+              <span class="track"></span>
+            </span>
+          </label>
+        </div>
+
+        <p class="hint-line">设置修改后自动保存；已经打开的标签页需要刷新一次才会应用新的站点列表。</p>
+      </section>
+
+      <section class="card section">
+        <details class="details">
+          <summary>它是怎么做到的？</summary>
+          <div class="details-body">
+            <p>
+              视频网站通过 Page Visibility API 判断你是否在看：切到别的标签页时，
+              <code>document.visibilityState</code> 会变成 <code>"hidden"</code>，播放器收到
+              <code>visibilitychange</code> 后就把视频流降级成音频流，切回来时再重建解码器 —— 这就是卡顿的来源。
+            </p>
+            <p>这个扩展在该站点加载前就做了三件事：</p>
+            <ol>
+              <li>
+                把 <code>document.hidden / visibilityState / hasFocus()</code> 改成永远"可见、聚焦"；
+              </li>
+              <li>
+                在 window 捕获阶段吞掉 <code>visibilitychange</code> 与窗口 <code>blur</code>，页面根本收不到通知；
+              </li>
+              <li>
+                后台时用自己的定时器接管 <code>requestAnimationFrame</code>，并在标签页级别关闭自动丢弃。
+              </li>
+            </ol>
+            <p class="fine-print">
+              局限：浏览器底层的省电调度、页面在 Web Worker 里的检测、以及站点自己的服务端心跳无法被完全绕过；
+              极少数站点可能仍会降级。这个方案本质上是用一点后台 CPU 换流畅度，介意耗电可以关掉"保持动画帧"。
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <footer class="page-foot">
+        <span>Keep Alive v<span id="version">1.0.0</span></span>
+        <span class="dot">·</span>
+        <span>不上传任何数据，只在你指定的站点运行</span>
+      </footer>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

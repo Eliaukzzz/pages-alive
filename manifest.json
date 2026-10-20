@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Keep Alive · 后台视频常亮",
+  "short_name": "Keep Alive",
+  "version": "1.0.0",
+  "description": "让指定网站以为标签页始终可见、始终聚焦，避免切到后台后视频降级为纯音频流、切回时卡顿重缓冲。",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_title": "Keep Alive · 后台视频常亮",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  }
+}

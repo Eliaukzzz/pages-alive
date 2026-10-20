@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Keep Alive Fixture</title>
+    <style>
+      body {
+        font: 14px/1.6 -apple-system, "PingFang SC", sans-serif;
+        max-width: 680px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #1f2937;
+      }
+      h1 {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      p.sub {
+        color: #6b7280;
+        margin-top: 0;
+      }
+      dl {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 8px 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+      dt {
+        color: #64748b;
+      }
+      dd {
+        margin: 0;
+        font-family: ui-monospace, Menlo, monospace;
+        font-weight: 600;
+      }
+      #mode[data-mode="audio"] {
+        color: #dc2626;
+      }
+      #mode[data-mode="video"] {
+        color: #059669;
+      }
+      .events {
+        word-break: break-all;
+        font-weight: 400;
+        font-size: 12px;
+      }
+      button {
+        margin-top: 16px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Keep Alive 测试页</h1>
+    <p class="sub">模拟一个"发现标签页隐藏就降级为纯音频"的播放器。</p>
+
+    <dl>
+      <dt>document.visibilityState</dt>
+      <dd id="vis">…</dd>
+      <dt>document.hidden</dt>
+      <dd id="hidden">…</dd>
+      <dt>document.hasFocus()</dt>
+      <dd id="focus">…</dd>
+      <dt>播放器模式</dt>
+      <dd id="mode" data-mode="video">video</dd>
+      <dt>requestAnimationFrame 帧数</dt>
+      <dd id="raf">0</dd>
+      <dt>页面收到的事件</dt>
+      <dd id="events" class="events">（无）</dd>
+    </dl>
+
+    <button id="dispatch">手动派发 visibilitychange / blur</button>
+
+    <script>
+      window.__test = {
+        events: [],
+        rafTicks: 0,
+        audioMode: false,
+        startedAt: Date.now(),
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function refresh() {
+        $('vis').textContent = document.visibilityState;
+        $('hidden').textContent = String(document.hidden);
+        $('focus').textContent = String(document.hasFocus());
+        $('mode').textContent = window.__test.audioMode ? 'audio（已降级）' : 'video';
+        $('mode').dataset.mode = window.__test.audioMode ? 'audio' : 'video';
+        $('raf').textContent = String(window.__test.rafTicks);
+        $('events').textContent = window.__test.events.length
+          ? window.__test.events.join(' · ')
+          : '（无）';
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        window.__test.events.push('visibilitychange:' + document.visibilityState);
+        if (document.hidden) window.__test.audioMode = true;
+        refresh();
+      });
+
+      window.addEventListener('blur', () => {
+        window.__test.events.push('window:blur');
+        refresh();
+      });
+
+      window.addEventListener('focus', () => {
+        window.__test.events.push('window:focus');
+        refresh();
+      });
+
+      (function loop() {
+        window.__test.rafTicks += 1;
+        if (window.__test.rafTicks % 5 === 0) refresh();
+        requestAnimationFrame(loop);
+      })();
+
+      setInterval(refresh, 250);
+
+      $('dispatch').addEventListener('click', () => {
+        document.dispatchEvent(new Event('visibilitychange'));
+        window.dispatchEvent(new Event('blur'));
+        refresh();
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>

@@ -147,7 +147,7 @@ def promo_small(icon_path, out):
     d.rectangle((30, 140, 54, 144), fill=ACCENT)
     text(d, (30, 160), "切到别的标签页", F(BOLD, 23, 1), WHITE)
     text(d, (30, 196), "视频也不降级为纯音频", F(BOLD, 23, 1), (190, 255, 226))
-    text(d, (30, 244), "B站 · YouTube · 腾讯视频 · 爱奇艺 …", F(REG, 13), (255, 255, 255, 160))
+    text(d, (30, 244), "常见视频站点 · 一键启用", F(REG, 13), (255, 255, 255, 160))
 
     img.convert("RGB").save(out, "PNG", optimize=True)
 
